@@ -4,6 +4,7 @@ import '../services/storage_service.dart';
 import '../services/firebase_service.dart';
 import '../services/auth_service.dart';
 import '../services/firestore_service.dart';
+import '../services/database_service.dart';
 import '../../modules/auth/controllers/auth_controller.dart';
 import '../../modules/auth/controllers/login_controller.dart';
 
@@ -25,6 +26,7 @@ class InitialBinding extends Bindings {
     Get.put(StorageService(), permanent: true);
     Get.put(FirebaseService(), permanent: true);
     Get.put(FirestoreService(), permanent: true);
+    Get.put(DatabaseService(), permanent: true);
     Get.put(AuthService(), permanent: true);
     
     // Initialize default data after all services are ready
@@ -36,7 +38,7 @@ class InitialBinding extends Bindings {
     Get.lazyPut(() => PosController());
     Get.lazyPut(() => ProductController());
     Get.lazyPut(() => ProfileController());
-    Get.lazyPut(() => DashboardController());
+    Get.put(DashboardController(), permanent: true);
     Get.lazyPut(() => SettingsController());
     Get.lazyPut(() => TransactionHistoryController());
     Get.lazyPut(() => MenuController());
