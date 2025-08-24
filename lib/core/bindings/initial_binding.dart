@@ -5,6 +5,7 @@ import '../services/firebase_service.dart';
 import '../services/auth_service.dart';
 import '../services/firestore_service.dart';
 import '../../modules/auth/controllers/auth_controller.dart';
+import '../../modules/auth/controllers/login_controller.dart';
 
 import '../../modules/pos/controllers/pos_controller.dart';
 import '../../modules/menu/controllers/product_controller.dart';
@@ -31,6 +32,7 @@ class InitialBinding extends Bindings {
     
     // Controllers
     Get.lazyPut(() => AuthController());
+    Get.put(LoginController(), permanent: true);
     Get.lazyPut(() => PosController());
     Get.lazyPut(() => ProductController());
     Get.lazyPut(() => ProfileController());

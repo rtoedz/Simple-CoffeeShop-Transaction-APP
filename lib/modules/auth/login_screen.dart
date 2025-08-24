@@ -1,60 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/services/auth_service.dart';
-import '../../core/routes/app_routes.dart';
-
-class LoginController extends GetxController {
-  final AuthService _authService = Get.find<AuthService>();
-  
-  final isLoading = false.obs;
-  final isPasswordVisible = false.obs;
-  bool _isDisposed = false;
-
-  @override
-  void onClose() {
-    _isDisposed = true;
-    super.onClose();
-  }
-
-  bool get isDisposed => _isDisposed;
-
-  void togglePasswordVisibility() {
-    isPasswordVisible.value = !isPasswordVisible.value;
-  }
-
-  Future<void> login(String email, String password) async {
-    if (isDisposed) return;
-    
-    if (email.isEmpty || password.isEmpty) {
-      if (!isDisposed) {
-        Get.snackbar('Error', 'Please fill all fields');
-      }
-      return;
-    }
-
-    try {
-      if (isDisposed) return;
-      isLoading.value = true;
-      
-      final userCredential = await _authService.signInWithEmailAndPassword(
-        email.trim(),
-        password.trim(),
-      );
-      
-      if (userCredential != null && !isDisposed) {
-        Get.offAllNamed(AppRoutes.DASHBOARD);
-      }
-    } catch (e) {
-      if (!isDisposed) {
-        Get.snackbar('Error', 'Login failed: $e');
-      }
-    } finally {
-      if (!isDisposed) {
-        isLoading.value = false;
-      }
-    }
-  }
-}
+import 'controllers/login_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -73,14 +19,15 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     emailController = TextEditingController();
     passwordController = TextEditingController();
-    controller = Get.put(LoginController());
+    // Use Get.find() to get existing controller from initial binding
+    controller = Get.find<LoginController>();
   }
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-    Get.delete<LoginController>();
+    // Don't delete controller here, let it persist
     super.dispose();
   }
 
